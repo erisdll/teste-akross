@@ -7,11 +7,11 @@ services:
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: pass
-      POSTGRES_DB: akross-test-db
+      POSTGRES_DB: akross-test
     ports:
       - '5432:5432'
     volumes:
-      - postgres:/data/postgres
+      - postgres-data:/var/lib/postgresql/data
     restart: always
 
   adminer:
@@ -24,5 +24,4 @@ services:
       - postgres
 
 volumes:
-  postgres:
-
+  postgres-data:

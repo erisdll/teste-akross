@@ -42,7 +42,7 @@ export class SquadController {
       throw new NotFoundException(`Squad with ID ${id} not found`);
     }
 
-    const members = this.squadService.FindSquadMembersById(+id);
+    const members = this.squadService.findSquadMembersById(+id);
     return { squad, members };
   }
 

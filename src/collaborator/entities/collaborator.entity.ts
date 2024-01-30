@@ -29,7 +29,7 @@ export class Collaborator {
 
   // Relations
   @ManyToOne(() => Squad, (squad) => squad.collaborators)
-  squad: Squad;
+  squad: number;
 
   // Audit Columns
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })

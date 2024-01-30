@@ -38,5 +38,5 @@ export class SquadService {
     await this.squadRepository.delete(id);
   }
 
-  async FindSquadMembersById(id: number) {}
+  async findSquadMembersById(id: number) {}
 }

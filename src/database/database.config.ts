@@ -10,7 +10,7 @@ export class DatabaseConfig implements TypeOrmOptionsFactory {
       port: parseInt(process.env.DB_PORT) || 5432,
       username: process.env.DB_USERNAME || 'root',
       password: process.env.DB_PASSWORD || 'pass',
-      database: process.env.DB_NAME || 'akross-test-db',
+      database: process.env.DB_DATABASE || 'akross-test',
       autoLoadEntities: true,
       synchronize: true,
     };
