@@ -1,26 +1,50 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { CollaboratorEntity } from './entities/collaborator.entity';
 import { CreateCollaboratorDto } from './dto/create-collaborator.dto';
 import { UpdateCollaboratorDto } from './dto/update-collaborator.dto';
 
 @Injectable()
 export class CollaboratorService {
-  create(createCollaboratorDto: CreateCollaboratorDto) {
-    return 'This action adds a new collaborator';
+  constructor(
+    @InjectRepository(CollaboratorEntity)
+    private collaboratorRepository: Repository<CollaboratorEntity>,
+  ) {}
+
+  async createNewCollaborator(
+    collaboratorData: CreateCollaboratorDto,
+  ): Promise<CollaboratorEntity> {
+    try {
+      const collaborator = this.collaboratorRepository.create(collaboratorData);
+      return await this.collaboratorRepository.save(collaborator);
+    } catch (error) {
+      throw error;
+    }
   }
 
-  findAll() {
-    return `This action returns all collaborator`;
+  async getAllCollaborators(): Promise<CollaboratorEntity[]> {
+    return await this.collaboratorRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} collaborator`;
+  async getCollaboratorByEmail(
+    collaboratorEmail,
+  ): Promise<CollaboratorEntity | null> {
+    return await this.collaboratorRepository.findOne(collaboratorEmail);
   }
 
-  update(id: number, updateCollaboratorDto: UpdateCollaboratorDto) {
-    return `This action updates a #${id} collaborator`;
+  async updateCollaborator(
+    collaboratorEmail,
+    collaboratorData: Partial<UpdateCollaboratorDto>,
+  ): Promise<CollaboratorEntity | null> {
+    await this.collaboratorRepository.update(
+      collaboratorEmail,
+      collaboratorData,
+    );
+    return this.getCollaboratorByEmail(collaboratorEmail);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} collaborator`;
+  async deleteCollaborator(collaboratorId: string): Promise<void> {
+    await this.collaboratorRepository.delete(collaboratorId);
   }
 }
