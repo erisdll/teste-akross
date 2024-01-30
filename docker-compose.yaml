@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres-container
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: akross-test-db
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres:/data/postgres
+    restart: always
+
+  adminer:
+    image: adminer
+    container_name: adminer-container2
+    restart: always
+    ports:
+      - '8080:8080'
+    depends_on:
+      - postgres
+
+volumes:
+  postgres:
+
