@@ -1,6 +1,7 @@
-import { IsString, IsEmail, IsOptional, IsDate } from 'class-validator';
+import { IsString, IsEmail, IsNotEmpty, IsNumber } from 'class-validator';
+import { Collaborator } from '../entities/collaborator.entity';
 
-export class CreateCollaboratorDto {
+export class CreateCollaboratorDto extends Collaborator {
   @IsString()
   readonly firstName: string;
 
@@ -13,7 +14,7 @@ export class CreateCollaboratorDto {
   @IsString()
   readonly role: string;
 
-  @IsOptional()
-  @IsDate()
-  readonly birthDate?: Date;
+  @IsNotEmpty()
+  @IsNumber()
+  readonly squadId: number;
 }

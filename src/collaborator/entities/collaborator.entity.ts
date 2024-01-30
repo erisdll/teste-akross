@@ -1,8 +1,16 @@
-import { SquadEntity } from 'src/squad/entities/squad.entity';
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { IsEmail } from 'class-validator';
+import { Squad } from 'src/squad/entities/squad.entity';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity('collaborators')
-export class CollaboratorEntity {
+export class Collaborator {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -12,24 +20,22 @@ export class CollaboratorEntity {
   @Column({ length: 100 })
   lastName: string;
 
+  @IsEmail()
   @Column({ unique: true })
   email: string;
 
   @Column({ length: 50 })
   role: string;
 
-  @Column({ type: 'date', nullable: true })
-  birthDate: Date;
-
   // Relations
-  @ManyToOne(() => SquadEntity, (squad) => squad.collaborators)
-  squad: SquadEntity;
+  @ManyToOne(() => Squad, (squad) => squad.collaborators)
+  squad: Squad;
 
   // Audit Columns
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 
-  @Column({
+  @UpdateDateColumn({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP',
     onUpdate: 'CURRENT_TIMESTAMP',
