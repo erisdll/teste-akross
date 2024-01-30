@@ -17,17 +17,17 @@ export class CollaboratorController {
 
   @Post()
   create(@Body() createCollaboratorDto: CreateCollaboratorDto) {
-    return this.collaboratorService.create(createCollaboratorDto);
+    return this.collaboratorService.createCollaborator(createCollaboratorDto);
   }
 
   @Get()
   findAll() {
-    return this.collaboratorService.findAll();
+    return this.collaboratorService.findAllCollaborators();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.collaboratorService.findOne(+id);
+    return this.collaboratorService.findCollaboratorById(id);
   }
 
   @Patch(':id')
@@ -35,11 +35,14 @@ export class CollaboratorController {
     @Param('id') id: string,
     @Body() updateCollaboratorDto: UpdateCollaboratorDto,
   ) {
-    return this.collaboratorService.update(+id, updateCollaboratorDto);
+    return this.collaboratorService.updateCollaborator(
+      id,
+      updateCollaboratorDto,
+    );
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.collaboratorService.remove(+id);
+    return this.collaboratorService.deleteCollaborator(id);
   }
 }

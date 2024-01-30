@@ -1,47 +1,42 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CollaboratorEntity } from './entities/collaborator.entity';
+import { Collaborator } from './entities/collaborator.entity';
 import { CreateCollaboratorDto } from './dto/create-collaborator.dto';
 import { UpdateCollaboratorDto } from './dto/update-collaborator.dto';
 
 @Injectable()
 export class CollaboratorService {
   constructor(
-    @InjectRepository(CollaboratorEntity)
-    private collaboratorRepository: Repository<CollaboratorEntity>,
+    @InjectRepository(Collaborator)
+    private collaboratorRepository: Repository<Collaborator>,
   ) {}
 
-  async createNewCollaborator(
+  async createCollaborator(
     collaboratorData: CreateCollaboratorDto,
-  ): Promise<CollaboratorEntity> {
-    try {
-      const collaborator = this.collaboratorRepository.create(collaboratorData);
-      return await this.collaboratorRepository.save(collaborator);
-    } catch (error) {
-      throw error;
-    }
+  ): Promise<Collaborator> {
+    const collaborator = this.collaboratorRepository.create(collaboratorData);
+    return await this.collaboratorRepository.save(collaborator);
   }
 
-  async getAllCollaborators(): Promise<CollaboratorEntity[]> {
+  async findAllCollaborators(): Promise<Collaborator[]> {
     return await this.collaboratorRepository.find();
   }
 
-  async getCollaboratorByEmail(
-    collaboratorEmail,
-  ): Promise<CollaboratorEntity | null> {
-    return await this.collaboratorRepository.findOne(collaboratorEmail);
+  async findCollaboratorById(
+    collaboratorId: string,
+  ): Promise<Collaborator | null> {
+    return this.collaboratorRepository.findOne({
+      where: { id: collaboratorId },
+    });
   }
 
   async updateCollaborator(
-    collaboratorEmail,
+    collaboratorId: string,
     collaboratorData: Partial<UpdateCollaboratorDto>,
-  ): Promise<CollaboratorEntity | null> {
-    await this.collaboratorRepository.update(
-      collaboratorEmail,
-      collaboratorData,
-    );
-    return this.getCollaboratorByEmail(collaboratorEmail);
+  ): Promise<Collaborator> {
+    await this.collaboratorRepository.update(collaboratorId, collaboratorData);
+    return this.findCollaboratorById(collaboratorId);
   }
 
   async deleteCollaborator(collaboratorId: string): Promise<void> {
