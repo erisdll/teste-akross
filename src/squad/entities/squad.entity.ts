@@ -1,20 +1,29 @@
-import { CollaboratorEntity } from 'src/collaborator/entities/collaborator.entity';
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Collaborator } from 'src/collaborator/entities/collaborator.entity';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToMany,
+  JoinColumn,
+} from 'typeorm';
 
 @Entity('squads')
-export class SquadEntity {
+export class Squad {
   @PrimaryGeneratedColumn('increment')
-  id: string;
+  id: number;
 
   @Column({ length: 100 })
-  area: string;
+  name: string;
 
-  @Column({ type: 'text', nullable: true })
+  @Column({ type: 'text' })
   attributions: string;
 
   // Relations
-  @OneToMany(() => CollaboratorEntity, (collaborator) => collaborator.squad)
-  collaborators: CollaboratorEntity[];
+  @OneToMany(() => Collaborator, (collaborator) => collaborator.squad, {
+    onDelete: 'SET NULL',
+  })
+  @JoinColumn()
+  collaborators: Collaborator[];
 
   // Audit Columns
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
