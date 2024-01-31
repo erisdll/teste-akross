@@ -4,7 +4,6 @@ import { UpdateSquadDto } from './dto/update-squad.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Squad } from './entities/squad.entity';
 import { Repository } from 'typeorm';
-import { Collaborator } from 'src/collaborator/entities/collaborator.entity';
 import { CollaboratorService } from 'src/collaborator/collaborator.service';
 
 @Injectable()
