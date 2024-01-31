@@ -42,7 +42,7 @@ export class SquadService {
   }
 
   async findOneSquad(id: number): Promise<Squad | null> {
-    const squad = await this.squadRepository.findOneByOrFail({ id });
+    const squad = await this.squadRepository.findOneBy({ id });
     return squad;
   }
 
@@ -60,7 +60,7 @@ export class SquadService {
         'collaborators.firstName',
         'collaborators.role',
       ])
-      .getOneOrFail();
+      .getOne();
     return squad;
   }
 

@@ -82,7 +82,7 @@ export class CollaboratorService {
         'squad.id',
         'squad.squadName',
       ])
-      .getOneOrFail();
+      .getOne();
     return collaborator;
   }
 
