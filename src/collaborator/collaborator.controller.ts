@@ -6,6 +6,8 @@ import {
   Patch,
   Param,
   Delete,
+  NotFoundException,
+  BadRequestException,
 } from '@nestjs/common';
 import { CollaboratorService } from './collaborator.service';
 import { CreateCollaboratorDto } from './dto/create-collaborator.dto';
@@ -16,33 +18,77 @@ export class CollaboratorController {
   constructor(private readonly collaboratorService: CollaboratorService) {}
 
   @Post()
-  create(@Body() createCollaboratorDto: CreateCollaboratorDto) {
-    return this.collaboratorService.createCollaborator(createCollaboratorDto);
+  async create(@Body() createCollaboratorDto: CreateCollaboratorDto) {
+    try {
+      const result = await this.collaboratorService.createCollaborator(
+        createCollaboratorDto,
+      );
+      return { success: true, data: result };
+    } catch (error) {
+      throw new BadRequestException(
+        'Failed to create collaborator!',
+        error.message,
+      );
+    }
   }
 
   @Get()
-  findAll() {
-    return this.collaboratorService.findAllCollaborators();
+  async findAll() {
+    try {
+      const collaborators =
+        await this.collaboratorService.findAllCollaborators();
+      return { success: true, data: collaborators };
+    } catch (error) {
+      throw new NotFoundException('Failed to find collaborators!');
+    }
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.collaboratorService.findCollaboratorById(id);
+  async findOne(@Param('id') id: string) {
+    try {
+      const collaborator =
+        await this.collaboratorService.findCollaboratorById(id);
+      return { success: true, data: collaborator };
+    } catch (error) {
+      throw new NotFoundException('Collaborator not found!');
+    }
   }
 
   @Patch(':id')
-  update(
+  async update(
     @Param('id') id: string,
     @Body() updateCollaboratorDto: UpdateCollaboratorDto,
   ) {
-    return this.collaboratorService.updateCollaborator(
-      id,
-      updateCollaboratorDto,
-    );
+    try {
+      const updatedCollaborator =
+        await this.collaboratorService.updateCollaborator(
+          id,
+          updateCollaboratorDto,
+        );
+      return { success: true, data: updatedCollaborator };
+    } catch (error) {
+      throw new BadRequestException(
+        'Failed to create collaborator!',
+        error.message,
+      );
+    }
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.collaboratorService.deleteCollaborator(id);
+  async remove(@Param('id') id: string) {
+    try {
+      const collaborator =
+        await this.collaboratorService.findCollaboratorById(id);
+      await this.collaboratorService.deleteCollaborator(id);
+      return {
+        success: true,
+        message: `Collaborator ${collaborator.firstName} was deleted successfully`,
+      };
+    } catch (error) {
+      throw new BadRequestException(
+        'Failed to create collaborator!',
+        error.message,
+      );
+    }
   }
 }

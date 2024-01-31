@@ -1,4 +1,4 @@
-import { IsString, IsEmail, IsNumber } from 'class-validator';
+import { IsString, IsEmail, IsNumber, IsOptional } from 'class-validator';
 
 export class CreateCollaboratorDto {
   @IsString()
@@ -14,5 +14,6 @@ export class CreateCollaboratorDto {
   readonly role: string;
 
   @IsNumber()
+  @IsOptional()
   readonly squad: number;
 }

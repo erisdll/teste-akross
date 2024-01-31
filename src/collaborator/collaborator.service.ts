@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Collaborator } from './entities/collaborator.entity';
@@ -17,21 +21,14 @@ export class CollaboratorService {
   async createCollaborator(
     collaboratorDto: CreateCollaboratorDto,
   ): Promise<Collaborator> {
-    const squadId = collaboratorDto.squad;
-
-    // Use the SquadService to find the squad by ID
-    const squad = await this.squadService.findSquadById(squadId);
-
-    if (!squad) {
-      throw new NotFoundException(`Squad with ID ${squadId} not found`);
+    const squadExists = await this.squadService.findSquadById(
+      collaboratorDto.squad,
+    );
+    if (collaboratorDto.squad && !squadExists) {
+      throw new BadRequestException('Referenced squad does not exist');
     }
-
-    // Assign the squad to the collaborator
-    const collaboratorToSave = this.collaboratorRepository.create({
-      ...collaboratorDto,
-    });
-
-    // Save the collaborator
+    const collaboratorToSave =
+      this.collaboratorRepository.create(collaboratorDto);
     return await this.collaboratorRepository.save(collaboratorToSave);
   }
 
@@ -51,6 +48,20 @@ export class CollaboratorService {
     collaboratorId: string,
     collaboratorDto: UpdateCollaboratorDto,
   ): Promise<Collaborator> {
+    const EmailInUse = await this.collaboratorRepository.findOne({
+      where: { email: collaboratorDto.email },
+    });
+    if (collaboratorDto.email && EmailInUse) {
+      throw new ConflictException('Email is already in use!');
+    }
+
+    const squadExists = await this.squadService.findSquadById(
+      collaboratorDto.squad,
+    );
+    if (collaboratorDto.squad && !squadExists) {
+      throw new BadRequestException('Referenced squad does not exist');
+    }
+
     await this.collaboratorRepository.update(collaboratorId, collaboratorDto);
     return this.findCollaboratorById(collaboratorId);
   }
