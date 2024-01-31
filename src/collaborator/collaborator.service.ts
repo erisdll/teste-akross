@@ -1,9 +1,9 @@
 import {
-  BadRequestException,
-  ConflictException,
   Inject,
   Injectable,
   forwardRef,
+  BadRequestException,
+  ConflictException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -12,6 +12,7 @@ import { CreateCollaboratorDto } from './dto/create-collaborator.dto';
 import { UpdateCollaboratorDto } from './dto/update-collaborator.dto';
 import { Squad } from 'src/squad/entities/squad.entity';
 import { SquadService } from 'src/squad/squad.service';
+import { ICollaboratorCount } from './interfaces/collaborators.interface';
 
 @Injectable()
 export class CollaboratorService {
@@ -48,9 +49,10 @@ export class CollaboratorService {
     return collaboratorToSave;
   }
 
-  async findAllCollaborators(): Promise<Collaborator[]> {
-    const collaborator = await this.collaboratorRepository
+  async findAllCollaborators(): Promise<ICollaboratorCount> {
+    const [collaborators, count] = await this.collaboratorRepository
       .createQueryBuilder('collaborator')
+      .leftJoin('collaborator.squad', 'squad')
       .select([
         'collaborator.id',
         'collaborator.firstName',
@@ -60,9 +62,8 @@ export class CollaboratorService {
         'squad.id',
         'squad.squadName',
       ])
-      .leftJoin('collaborator.squad', 'squad')
-      .getMany();
-    return collaborator;
+      .getManyAndCount();
+    return { count, collaborators };
   }
 
   async findOneCollaborator(
@@ -70,6 +71,8 @@ export class CollaboratorService {
   ): Promise<Collaborator | null> {
     const collaborator = await this.collaboratorRepository
       .createQueryBuilder('collaborator')
+      .leftJoin('collaborator.squad', 'squad')
+      .where('collaborator.id = :id', { id: collaboratorId })
       .select([
         'collaborator.id',
         'collaborator.firstName',
@@ -79,9 +82,7 @@ export class CollaboratorService {
         'squad.id',
         'squad.squadName',
       ])
-      .leftJoin('collaborator.squad', 'squad')
-      .where('collaborator.id = :id', { id: collaboratorId })
-      .getOne();
+      .getOneOrFail();
     return collaborator;
   }
 

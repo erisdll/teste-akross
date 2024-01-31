@@ -1,8 +1,9 @@
 import {
   Inject,
   Injectable,
-  NotFoundException,
   forwardRef,
+  NotFoundException,
+  ConflictException,
 } from '@nestjs/common';
 import { CreateSquadDto } from './dto/create-squad.dto';
 import { UpdateSquadDto } from './dto/update-squad.dto';
@@ -10,6 +11,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Squad } from './entities/squad.entity';
 import { Repository } from 'typeorm';
 import { CollaboratorService } from 'src/collaborator/collaborator.service';
+import { ISquadCount } from './interfaces/squadresponse.interface';
 
 @Injectable()
 export class SquadService {
@@ -21,12 +23,22 @@ export class SquadService {
   ) {}
 
   async createSquad(createSquadDto: CreateSquadDto): Promise<Squad> {
+    const nameInUse = await this.squadRepository.findOneBy({
+      squadName: createSquadDto.squadName,
+    });
+    if (nameInUse) {
+      throw new ConflictException('This name is already in use!');
+    }
+
     const squadToSave = this.squadRepository.create(createSquadDto);
     return await this.squadRepository.save(squadToSave);
   }
 
-  async findAllSquads(): Promise<Squad[]> {
-    return await this.squadRepository.find();
+  async findAllSquads(): Promise<ISquadCount> {
+    const [squads, count] = await this.squadRepository
+      .createQueryBuilder('squads')
+      .getManyAndCount();
+    return { count, squads };
   }
 
   async findOneSquad(id: number): Promise<Squad | null> {
@@ -37,6 +49,8 @@ export class SquadService {
   async findSquadWithCollaborators(id: number): Promise<Squad | null> {
     const squad = await this.squadRepository
       .createQueryBuilder('squad')
+      .leftJoin('squad.collaborators', 'collaborators')
+      .where('squad.id = :id', { id: id })
       .select([
         'squad.id',
         'squad.squadName',
@@ -46,9 +60,7 @@ export class SquadService {
         'collaborators.firstName',
         'collaborators.role',
       ])
-      .leftJoin('squad.collaborators', 'collaborators')
-      .where('squad.id = :id', { id: id })
-      .getOne();
+      .getOneOrFail();
     return squad;
   }
 
