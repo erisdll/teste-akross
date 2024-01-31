@@ -12,7 +12,9 @@ import {
 import { CollaboratorService } from './collaborator.service';
 import { CreateCollaboratorDto } from './dto/create-collaborator.dto';
 import { UpdateCollaboratorDto } from './dto/update-collaborator.dto';
+import { ApiParam, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Collaborators')
 @Controller('collaborators')
 export class CollaboratorController {
   constructor(private readonly collaboratorService: CollaboratorService) {}
@@ -46,6 +48,7 @@ export class CollaboratorController {
     }
   }
 
+  @ApiParam({ name: 'id', description: 'The UUID of the collaborator' })
   @Get(':id')
   async findOne(@Param('id') id: string) {
     try {
@@ -57,6 +60,7 @@ export class CollaboratorController {
     }
   }
 
+  @ApiParam({ name: 'id', description: 'The UUID of the collaborator' })
   @Patch(':id')
   async update(
     @Param('id') id: string,
@@ -79,6 +83,7 @@ export class CollaboratorController {
     }
   }
 
+  @ApiParam({ name: 'id', description: 'The UUID of the collaborator' })
   @Delete(':id')
   async remove(@Param('id') id: string) {
     try {

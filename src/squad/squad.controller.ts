@@ -12,7 +12,9 @@ import {
 import { SquadService } from './squad.service';
 import { CreateSquadDto } from './dto/create-squad.dto';
 import { UpdateSquadDto } from './dto/update-squad.dto';
+import { ApiParam, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Squads')
 @Controller('squads')
 export class SquadController {
   constructor(private readonly squadService: SquadService) {}
@@ -40,6 +42,7 @@ export class SquadController {
     }
   }
 
+  @ApiParam({ name: 'id', description: 'The UUID of the squad' })
   @Get(':id')
   async findOne(@Param('id') id: number) {
     try {
@@ -50,6 +53,7 @@ export class SquadController {
     }
   }
 
+  @ApiParam({ name: 'id', description: 'The UUID of the squad' })
   @Patch(':id')
   async update(
     @Param('id') id: number,
@@ -69,6 +73,7 @@ export class SquadController {
     }
   }
 
+  @ApiParam({ name: 'id', description: 'The UUID of the squad' })
   @Delete(':id')
   async remove(@Param('id') id: number) {
     try {
