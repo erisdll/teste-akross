@@ -1,22 +1,38 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Collaborator } from './entities/collaborator.entity';
 import { CreateCollaboratorDto } from './dto/create-collaborator.dto';
 import { UpdateCollaboratorDto } from './dto/update-collaborator.dto';
+import { SquadService } from 'src/squad/squad.service';
 
 @Injectable()
 export class CollaboratorService {
   constructor(
     @InjectRepository(Collaborator)
-    private collaboratorRepository: Repository<Collaborator>,
+    private readonly collaboratorRepository: Repository<Collaborator>,
+    private readonly squadService: SquadService,
   ) {}
 
   async createCollaborator(
-    collaboratorData: CreateCollaboratorDto,
+    collaboratorDto: CreateCollaboratorDto,
   ): Promise<Collaborator> {
-    const collaborator = this.collaboratorRepository.create(collaboratorData);
-    return await this.collaboratorRepository.save(collaborator);
+    const squadId = collaboratorDto.squad;
+
+    // Use the SquadService to find the squad by ID
+    const squad = await this.squadService.findSquadById(squadId);
+
+    if (!squad) {
+      throw new NotFoundException(`Squad with ID ${squadId} not found`);
+    }
+
+    // Assign the squad to the collaborator
+    const collaboratorToSave = this.collaboratorRepository.create({
+      ...collaboratorDto,
+    });
+
+    // Save the collaborator
+    return await this.collaboratorRepository.save(collaboratorToSave);
   }
 
   async findAllCollaborators(): Promise<Collaborator[]> {
@@ -33,9 +49,9 @@ export class CollaboratorService {
 
   async updateCollaborator(
     collaboratorId: string,
-    collaboratorData: Partial<UpdateCollaboratorDto>,
+    collaboratorDto: UpdateCollaboratorDto,
   ): Promise<Collaborator> {
-    await this.collaboratorRepository.update(collaboratorId, collaboratorData);
+    await this.collaboratorRepository.update(collaboratorId, collaboratorDto);
     return this.findCollaboratorById(collaboratorId);
   }
 

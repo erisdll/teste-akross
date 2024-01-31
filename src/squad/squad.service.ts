@@ -26,7 +26,7 @@ export class SquadService {
     return squad;
   }
 
-  async updateSquad(
+  async updateSquadById(
     id: number,
     updateSquadDto: UpdateSquadDto,
   ): Promise<Squad | null> {
@@ -37,6 +37,4 @@ export class SquadService {
   async removeOneSquad(id: number): Promise<void> {
     await this.squadRepository.delete(id);
   }
-
-  async findSquadMembersById(id: number) {}
 }

@@ -8,5 +8,6 @@ import { Squad } from './entities/squad.entity';
   imports: [TypeOrmModule.forFeature([Squad])],
   controllers: [SquadController],
   providers: [SquadService],
+  exports: [SquadService],
 })
 export class SquadModule {}

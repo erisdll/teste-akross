@@ -13,7 +13,7 @@ export class Squad {
   id: number;
 
   @Column({ length: 100 })
-  name: string;
+  squadName: string;
 
   @Column({ type: 'text' })
   attributions: string;
