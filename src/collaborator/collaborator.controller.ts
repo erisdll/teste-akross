@@ -24,7 +24,6 @@ export class CollaboratorController {
         createCollaboratorDto,
       );
       return {
-        success: true,
         message: `Collaborator ${newCollaborator.firstName} was created successfully`,
         data: newCollaborator,
       };
@@ -52,7 +51,7 @@ export class CollaboratorController {
     try {
       const collaborator =
         await this.collaboratorService.findOneCollaborator(id);
-      return { success: true, data: collaborator };
+      return { data: collaborator };
     } catch (error) {
       throw new NotFoundException('Collaborator not found!');
     }
@@ -64,15 +63,13 @@ export class CollaboratorController {
     @Body() updateCollaboratorDto: UpdateCollaboratorDto,
   ) {
     try {
-      const updatedCollaborator =
-        await this.collaboratorService.updateCollaborator(
-          id,
-          updateCollaboratorDto,
-        );
+      const updated = await this.collaboratorService.updateCollaborator(
+        id,
+        updateCollaboratorDto,
+      );
       return {
-        success: true,
-        message: `Collaborator ${updatedCollaborator.firstName} was updated successfully`,
-        data: updatedCollaborator,
+        message: `Collaborator ${updated.firstName} was updated successfully`,
+        data: updated,
       };
     } catch (error) {
       throw new BadRequestException(
@@ -85,12 +82,9 @@ export class CollaboratorController {
   @Delete(':id')
   async remove(@Param('id') id: string) {
     try {
-      const collaborator =
-        await this.collaboratorService.findOneCollaborator(id);
-      await this.collaboratorService.deleteCollaborator(id);
+      await this.collaboratorService.removeCollaborator(id);
       return {
-        success: true,
-        message: `Collaborator ${collaborator.firstName} was deleted successfully`,
+        message: `The collaborator was deleted successfully`,
       };
     } catch (error) {
       throw new BadRequestException(
