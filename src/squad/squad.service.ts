@@ -30,6 +30,11 @@ export class SquadService {
   }
 
   async findOneSquad(id: number): Promise<Squad | null> {
+    const squad = await this.squadRepository.findOneByOrFail({ id });
+    return squad;
+  }
+
+  async findSquadWithCollaborators(id: number): Promise<Squad | null> {
     const squad = await this.squadRepository
       .createQueryBuilder('squad')
       .select([
@@ -37,11 +42,13 @@ export class SquadService {
         'squad.squadName',
         'squad.description',
         'squad.project',
+        'collaborators.id',
+        'collaborators.firstName',
+        'collaborators.role',
       ])
-      .leftJoinAndSelect('squad.collaborators', 'members') // assuming the relation is named "collaborators"
-      .where('squad.id = :id', { id })
+      .leftJoin('squad.collaborators', 'collaborators')
+      .where('squad.id = :id', { id: id })
       .getOne();
-
     return squad;
   }
 

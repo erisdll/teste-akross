@@ -43,7 +43,7 @@ export class SquadController {
   @Get(':id')
   async findOne(@Param('id') id: number) {
     try {
-      const squad = await this.squadService.findOneSquad(id);
+      const squad = await this.squadService.findSquadWithCollaborators(id);
       return squad;
     } catch (error) {
       throw new NotFoundException(`Squad with ID ${id} was not found`);

@@ -34,10 +34,11 @@ export class Collaborator {
   squad: Squad;
 
   // Audit Columns
-  @CreateDateColumn()
+  @CreateDateColumn({ select: false })
   createdAt: Date;
 
   @UpdateDateColumn({
+    select: false,
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP',
     onUpdate: 'CURRENT_TIMESTAMP',

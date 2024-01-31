@@ -3,7 +3,6 @@ import {
   ConflictException,
   Inject,
   Injectable,
-  NotFoundException,
   forwardRef,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -26,20 +25,18 @@ export class CollaboratorService {
   async createCollaborator(
     collaboratorDto: CreateCollaboratorDto,
   ): Promise<Collaborator> {
-    if (collaboratorDto.email) {
-      const emailInUse = await this.collaboratorRepository.findOneBy({
-        email: collaboratorDto.email,
-      });
-      if (emailInUse) {
-        throw new ConflictException('Email is already in use!');
-      }
+    const emailInUse = await this.collaboratorRepository.findOneBy({
+      email: collaboratorDto.email,
+    });
+    if (emailInUse) {
+      throw new ConflictException('This Email is already in use!');
     }
 
     let squad: Squad | undefined;
     if (collaboratorDto.squad) {
       squad = await this.squadService.findOneSquad(collaboratorDto.squad);
       if (!squad) {
-        throw new BadRequestException('Squad does not exist!');
+        throw new BadRequestException('The referenced does not exist!');
       }
     }
 
@@ -47,7 +44,8 @@ export class CollaboratorService {
       ...collaboratorDto,
       squad: squad,
     });
-    return await this.collaboratorRepository.save(collaboratorToSave);
+    await this.collaboratorRepository.save(collaboratorToSave);
+    return collaboratorToSave;
   }
 
   async findAllCollaborators(): Promise<Collaborator[]> {
@@ -66,6 +64,7 @@ export class CollaboratorService {
       .getMany();
     return collaborator;
   }
+
   async findOneCollaborator(
     collaboratorId: string,
   ): Promise<Collaborator | null> {
@@ -82,7 +81,7 @@ export class CollaboratorService {
       ])
       .leftJoin('collaborator.squad', 'squad')
       .where('collaborator.id = :id', { id: collaboratorId })
-      .getOneOrFail();
+      .getOne();
     return collaborator;
   }
 
@@ -95,7 +94,7 @@ export class CollaboratorService {
         email: collaboratorDto.email,
       });
       if (emailInUse) {
-        throw new ConflictException('Email is already in use!');
+        throw new Error('Email is already in use!');
       }
     }
 
@@ -103,13 +102,13 @@ export class CollaboratorService {
     if (collaboratorDto.squad) {
       squad = await this.squadService.findOneSquad(collaboratorDto.squad);
       if (!squad) {
-        throw new BadRequestException('Referenced squad does not exist');
+        throw new Error('Referenced squad does not exist');
       }
     }
 
     const existingCollaborator = await this.findOneCollaborator(collaboratorId);
     if (!existingCollaborator) {
-      throw new NotFoundException('Collaborator not found');
+      throw new Error('Collaborator not found');
     }
 
     await this.collaboratorRepository.update(collaboratorId, {
