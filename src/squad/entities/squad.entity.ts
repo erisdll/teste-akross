@@ -16,7 +16,7 @@ export class Squad {
   squadName: string;
 
   @Column({ length: 500 })
-  attributions: string;
+  description: string;
 
   @Column({ length: 100 })
   project: string;

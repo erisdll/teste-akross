@@ -8,7 +8,7 @@ export class CreateSquadDto {
 
   @IsString()
   @ApiProperty()
-  readonly attributions: string;
+  readonly description: string;
 
   @IsString()
   @ApiProperty()

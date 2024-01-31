@@ -17,10 +17,5 @@ export class UpdateSquadDto extends PartialType(CreateSquadDto) {
   @IsString()
   @IsOptional()
   @ApiPropertyOptional()
-  readonly attributions: string;
-
-  @IsString()
-  @IsOptional()
-  @ApiPropertyOptional()
   readonly project: string;
 }
