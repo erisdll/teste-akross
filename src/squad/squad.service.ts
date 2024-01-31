@@ -1,4 +1,9 @@
-import { Inject, Injectable, forwardRef } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  NotFoundException,
+  forwardRef,
+} from '@nestjs/common';
 import { CreateSquadDto } from './dto/create-squad.dto';
 import { UpdateSquadDto } from './dto/update-squad.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -41,11 +46,19 @@ export class SquadService {
   }
 
   async updateSquad(
-    id: number,
+    squadId: number,
     updateSquadDto: UpdateSquadDto,
   ): Promise<Squad | null> {
-    await this.squadRepository.update(id, updateSquadDto);
-    return await this.squadRepository.findOneBy({ id });
+    const existingSquad = await this.findOneSquad(squadId);
+    if (!existingSquad) {
+      throw new NotFoundException('Squad not found!');
+    }
+
+    await this.squadRepository.update(squadId, {
+      ...updateSquadDto,
+    });
+
+    return this.findOneSquad(squadId);
   }
 
   async removeSquad(id: number): Promise<void> {

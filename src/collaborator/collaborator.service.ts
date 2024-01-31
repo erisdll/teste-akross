@@ -82,7 +82,7 @@ export class CollaboratorService {
       ])
       .leftJoin('collaborator.squad', 'squad')
       .where('collaborator.id = :id', { id: collaboratorId })
-      .getOne();
+      .getOneOrFail();
     return collaborator;
   }
 
@@ -120,7 +120,7 @@ export class CollaboratorService {
     return this.findOneCollaborator(collaboratorId);
   }
 
-  async deleteCollaborator(collaboratorId: string): Promise<void> {
+  async removeCollaborator(collaboratorId: string): Promise<void> {
     await this.collaboratorRepository.delete(collaboratorId);
   }
 }
