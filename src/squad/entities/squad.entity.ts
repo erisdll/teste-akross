@@ -15,8 +15,8 @@ export class Squad {
   @Column({ length: 100, unique: true })
   squadName: string;
 
-  @Column({ type: 'text' })
-  description: string;
+  @Column({ length: 500 })
+  attributions: string;
 
   @Column({ length: 100 })
   project: string;
