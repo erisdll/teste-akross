@@ -51,7 +51,7 @@ export class CollaboratorService {
   }
 
   async findAllCollaborators(): Promise<Collaborator[]> {
-    return this.collaboratorRepository
+    const collaborator = await this.collaboratorRepository
       .createQueryBuilder('collaborator')
       .select([
         'collaborator.id',
@@ -64,11 +64,12 @@ export class CollaboratorService {
       ])
       .leftJoin('collaborator.squad', 'squad')
       .getMany();
+    return collaborator;
   }
   async findOneCollaborator(
     collaboratorId: string,
   ): Promise<Collaborator | null> {
-    return this.collaboratorRepository
+    const collaborator = await this.collaboratorRepository
       .createQueryBuilder('collaborator')
       .select([
         'collaborator.id',
@@ -82,6 +83,7 @@ export class CollaboratorService {
       .leftJoin('collaborator.squad', 'squad')
       .where('collaborator.id = :id', { id: collaboratorId })
       .getOne();
+    return collaborator;
   }
 
   async updateCollaborator(

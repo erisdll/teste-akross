@@ -25,7 +25,18 @@ export class SquadService {
   }
 
   async findOneSquad(id: number): Promise<Squad | null> {
-    const squad = await this.squadRepository.findOne({ where: { id } });
+    const squad = await this.squadRepository
+      .createQueryBuilder('squad')
+      .select([
+        'squad.id',
+        'squad.squadName',
+        'squad.description',
+        'squad.project',
+      ])
+      .leftJoinAndSelect('squad.collaborators', 'members') // assuming the relation is named "collaborators"
+      .where('squad.id = :id', { id })
+      .getOne();
+
     return squad;
   }
 
