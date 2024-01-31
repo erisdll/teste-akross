@@ -28,7 +28,7 @@ export class SquadController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    const squad = this.squadService.findSquadById(+id);
+    const squad = this.squadService.findOneSquad(+id);
     if (!squad) {
       throw new NotFoundException(`Squad with ID ${id} not found`);
     }
@@ -37,11 +37,11 @@ export class SquadController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateSquadDTO: UpdateSquadDto) {
-    return this.squadService.updateSquadById(+id, updateSquadDTO);
+    return this.squadService.updateSquad(+id, updateSquadDTO);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.squadService.removeOneSquad(+id);
+    return this.squadService.removeSquad(+id);
   }
 }

@@ -12,11 +12,14 @@ export class Squad {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @Column({ length: 100 })
+  @Column({ length: 100, unique: true })
   squadName: string;
 
   @Column({ type: 'text' })
-  attributions: string;
+  description: string;
+
+  @Column({ length: 100 })
+  project: string;
 
   // Relations
   @OneToMany(() => Collaborator, (collaborator) => collaborator.squad, {

@@ -1,4 +1,3 @@
-import { IsEmail } from 'class-validator';
 import { Squad } from 'src/squad/entities/squad.entity';
 import {
   Entity,
@@ -7,6 +6,9 @@ import {
   ManyToOne,
   CreateDateColumn,
   UpdateDateColumn,
+  JoinColumn,
+  // OneToOne,
+  // JoinColumn,
 } from 'typeorm';
 
 @Entity('collaborators')
@@ -20,7 +22,6 @@ export class Collaborator {
   @Column({ length: 100 })
   lastName: string;
 
-  @IsEmail()
   @Column({ unique: true })
   email: string;
 
@@ -29,10 +30,11 @@ export class Collaborator {
 
   // Relations
   @ManyToOne(() => Squad, (squad) => squad.collaborators)
-  squad: number;
+  @JoinColumn()
+  squad: Squad;
 
   // Audit Columns
-  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  @CreateDateColumn()
   createdAt: Date;
 
   @UpdateDateColumn({

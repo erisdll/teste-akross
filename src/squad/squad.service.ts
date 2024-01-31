@@ -1,15 +1,19 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { CreateSquadDto } from './dto/create-squad.dto';
 import { UpdateSquadDto } from './dto/update-squad.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Squad } from './entities/squad.entity';
 import { Repository } from 'typeorm';
+import { Collaborator } from 'src/collaborator/entities/collaborator.entity';
+import { CollaboratorService } from 'src/collaborator/collaborator.service';
 
 @Injectable()
 export class SquadService {
   constructor(
     @InjectRepository(Squad)
     private readonly squadRepository: Repository<Squad>,
+    @Inject(forwardRef(() => CollaboratorService))
+    private readonly collaboratorService: CollaboratorService,
   ) {}
 
   async createSquad(createSquadDto: CreateSquadDto): Promise<Squad> {
@@ -21,12 +25,12 @@ export class SquadService {
     return await this.squadRepository.find();
   }
 
-  async findSquadById(id: number): Promise<Squad | null> {
+  async findOneSquad(id: number): Promise<Squad | null> {
     const squad = await this.squadRepository.findOne({ where: { id } });
     return squad;
   }
 
-  async updateSquadById(
+  async updateSquad(
     id: number,
     updateSquadDto: UpdateSquadDto,
   ): Promise<Squad | null> {
@@ -34,7 +38,7 @@ export class SquadService {
     return await this.squadRepository.findOneBy({ id });
   }
 
-  async removeOneSquad(id: number): Promise<void> {
+  async removeSquad(id: number): Promise<void> {
     await this.squadRepository.delete(id);
   }
 }

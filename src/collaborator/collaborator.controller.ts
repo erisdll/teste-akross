@@ -20,10 +20,14 @@ export class CollaboratorController {
   @Post()
   async create(@Body() createCollaboratorDto: CreateCollaboratorDto) {
     try {
-      const result = await this.collaboratorService.createCollaborator(
+      const newCollaborator = await this.collaboratorService.createCollaborator(
         createCollaboratorDto,
       );
-      return { success: true, data: result };
+      return {
+        success: true,
+        message: `Collaborator ${newCollaborator.firstName} was created successfully`,
+        data: newCollaborator,
+      };
     } catch (error) {
       throw new BadRequestException(
         'Failed to create collaborator!',
@@ -39,7 +43,7 @@ export class CollaboratorController {
         await this.collaboratorService.findAllCollaborators();
       return { success: true, data: collaborators };
     } catch (error) {
-      throw new NotFoundException('Failed to find collaborators!');
+      throw new NotFoundException('Failed to find any collaborators!');
     }
   }
 
@@ -47,7 +51,7 @@ export class CollaboratorController {
   async findOne(@Param('id') id: string) {
     try {
       const collaborator =
-        await this.collaboratorService.findCollaboratorById(id);
+        await this.collaboratorService.findOneCollaborator(id);
       return { success: true, data: collaborator };
     } catch (error) {
       throw new NotFoundException('Collaborator not found!');
@@ -65,10 +69,14 @@ export class CollaboratorController {
           id,
           updateCollaboratorDto,
         );
-      return { success: true, data: updatedCollaborator };
+      return {
+        success: true,
+        message: `Collaborator ${updatedCollaborator.firstName} was updated successfully`,
+        data: updatedCollaborator,
+      };
     } catch (error) {
       throw new BadRequestException(
-        'Failed to create collaborator!',
+        'Failed to update collaborator!',
         error.message,
       );
     }
@@ -78,7 +86,7 @@ export class CollaboratorController {
   async remove(@Param('id') id: string) {
     try {
       const collaborator =
-        await this.collaboratorService.findCollaboratorById(id);
+        await this.collaboratorService.findOneCollaborator(id);
       await this.collaboratorService.deleteCollaborator(id);
       return {
         success: true,
@@ -86,7 +94,7 @@ export class CollaboratorController {
       };
     } catch (error) {
       throw new BadRequestException(
-        'Failed to create collaborator!',
+        'Failed to delete collaborator!',
         error.message,
       );
     }
