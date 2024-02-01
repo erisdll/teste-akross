@@ -58,8 +58,7 @@
 
 ### Deployment via Render
   A Aplicação está deployada e conectada a uma DB em nuvem, [já disponível para uso](https://akross-test.onrender.com/api).
-
-  Pode ser necessário alguns segundos de espera inicial até o *spool up* do serviço, visto que ele está hosteado em tier free.
+  No primeiro acesso pode ser necessário alguns segundos de espera inicial até o *spin up* do serviço, que está hosteado em tier free.
 
 ## Como usar
 ### Pré-requisitos
@@ -92,8 +91,6 @@ Toda a documentação necessária para realizar os testes pelo Swagger UI pode s
 - [Endereço Local](http://localhost:3000/api)
 - [Acesso à DB local via Adminer](http://localhost:8080)
 - [Deploy no Render](https://akross-test.onrender.com/api)
-(é necessário esperar alguns segundos
-até o spool up do app, está hospedado em tier free)
 
 ### Exemplos de alguns endpoins
 - Criar um Colaborador:
