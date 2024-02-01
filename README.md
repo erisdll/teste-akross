@@ -8,7 +8,10 @@
 
 ## Descrição
 
-
+### Diagrama:
+<p align="center">
+  <img src="./assets/DBDiagram.png" width="500" alt="Diagrama" /></a>
+</p>
 
 ## Instalação
 
