@@ -48,7 +48,11 @@ export class CollaboratorController {
     }
   }
 
-  @ApiParam({ name: 'id', description: 'The UUID of the collaborator' })
+  @ApiParam({
+    name: 'id',
+    description:
+      'The UUID of the collaborator (available in get all route response)',
+  })
   @Get(':id')
   async findOne(@Param('id') id: string) {
     try {
@@ -60,7 +64,11 @@ export class CollaboratorController {
     }
   }
 
-  @ApiParam({ name: 'id', description: 'The UUID of the collaborator' })
+  @ApiParam({
+    name: 'id',
+    description:
+      'The UUID of the collaborator (available in get all route response)',
+  })
   @Patch(':id')
   async update(
     @Param('id') id: string,
@@ -83,7 +91,11 @@ export class CollaboratorController {
     }
   }
 
-  @ApiParam({ name: 'id', description: 'The UUID of the collaborator' })
+  @ApiParam({
+    name: 'id',
+    description:
+      'The UUID of the collaborator (available in get all route response)',
+  })
   @Delete(':id')
   async remove(@Param('id') id: string) {
     try {

@@ -42,7 +42,10 @@ export class SquadController {
     }
   }
 
-  @ApiParam({ name: 'id', description: 'The UUID of the squad' })
+  @ApiParam({
+    name: 'id',
+    description: 'The ID of the squad (available in get all route response)',
+  })
   @Get(':id')
   async findOne(@Param('id') id: number) {
     try {
@@ -53,7 +56,10 @@ export class SquadController {
     }
   }
 
-  @ApiParam({ name: 'id', description: 'The UUID of the squad' })
+  @ApiParam({
+    name: 'id',
+    description: 'The ID of the squad (available in get all route response)',
+  })
   @Patch(':id')
   async update(
     @Param('id') id: number,
@@ -73,7 +79,10 @@ export class SquadController {
     }
   }
 
-  @ApiParam({ name: 'id', description: 'The UUID of the squad' })
+  @ApiParam({
+    name: 'id',
+    description: 'The ID of the squad (available in get all route response)',
+  })
   @Delete(':id')
   async remove(@Param('id') id: number) {
     try {
