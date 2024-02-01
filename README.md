@@ -2,8 +2,6 @@
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="100" alt="Nest Logo" /></a>
   <a href="https://typeorm.io/" target="blank"><img src="https://github.com/typeorm/typeorm/raw/master/resources/logo_big.png" width="200" alt="TypeORM Logo" /></a>
   <a href="https://www.postgresql.org/" target="blank"><img src="https://www.postgresql.org/media/img/about/press/elephant.png" width="100" alt="PostgreSQL Logo" /></a>
-</p>
-<p align="center">
   <a href="https://swagger.io/" target="blank"><img src="https://upload.wikimedia.org/wikipedia/commons/a/ab/Swagger-logo.png" width="100" alt="Swagger Logo" /></a>
   <a href="https://www.docker.com/" target="blank"><img src="./assets/dockerlogo.png" height="100" alt="Docker Logo" /></a>
 </p>
