@@ -116,7 +116,7 @@ POST /squads
   "project": "string"
 }
 ```
-- Buscar um Collaborador:
+- Buscar um Colaborador:
 ```http
 GET /collaborators/:id         // collaboratorID: UUID
 
