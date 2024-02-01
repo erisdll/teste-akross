@@ -2,7 +2,11 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-
+/**
+ * Bootstrap function that creates and configures the NestJS application.
+ * Applying global filters, guards, interceptors, and validation pipes.
+ * Also sets up Swagger documentation.
+ */
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalFilters();
@@ -14,9 +18,11 @@ async function bootstrap() {
       whitelist: true,
     }),
   );
-
+  /**
+   * Configures and enables Swagger documentation
+   */
   const config = new DocumentBuilder()
-    .setTitle('Akross Test API')
+    .setTitle('Akross Squad Manager API')
     .setDescription(
       'This api was developed as a technical test for a position as a back-end development trainee at Akross',
     )

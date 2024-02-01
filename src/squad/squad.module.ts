@@ -4,7 +4,10 @@ import { SquadController } from './squad.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Squad } from './entities/squad.entity';
 import { CollaboratorModule } from 'src/collaborator/collaborator.module';
-
+/**
+ * Module defining the Collaborator-related components.
+ * Uses NestJS decorators for module configuration and dependency injection.
+ */
 @Module({
   imports: [
     TypeOrmModule.forFeature([Squad]),

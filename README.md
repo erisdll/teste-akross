@@ -63,21 +63,10 @@ $ npm install
 ```
 
 ## Ativando o App
-Primeiro é necessário ativar a database:
-```bash
-$ docker-compose up -d
-# ou
-$ docker compose up -d
-# dependendo do tipo de instalação do Docker
-```
-Depois pode ser ativada aplicação em si:
-
+Após se certificar de que o docker-compose está instalado:
 ```bash
 # development watch mode
 $ npm run start:dev
-
-# ou production mode
-$ npm run start:prod
 ```
 ## Testando o App
 Toda a documentação necessária para realizar os testes pode ser encontrada no endereço de documentação da API:

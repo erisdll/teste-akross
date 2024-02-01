@@ -1,7 +1,5 @@
 import {
-  Inject,
   Injectable,
-  forwardRef,
   BadRequestException,
   ConflictException,
 } from '@nestjs/common';
@@ -13,16 +11,23 @@ import { UpdateCollaboratorDto } from './dto/update-collaborator.dto';
 import { Squad } from 'src/squad/entities/squad.entity';
 import { SquadService } from 'src/squad/squad.service';
 import { ICollaboratorCount } from './interfaces/collaborators.interface';
-
+/**
+ * Injectable service handling business logic for Collaborator entities.
+ * Utilizes TypeORM decorators for database interactions and NestJS decorators for dependency injection.
+ */
 @Injectable()
 export class CollaboratorService {
   constructor(
     @InjectRepository(Collaborator)
     private readonly collaboratorRepository: Repository<Collaborator>,
-    @Inject(forwardRef(() => SquadService))
     private readonly squadService: SquadService,
   ) {}
-
+  /**
+   * Creates a new collaborator, ensuring email uniqueness and (if applicable) squad existence.
+   *
+   * @param collaboratorDto - Data transfer object for creating a collaborator
+   * @returns The created collaborator entity and squad if present.
+   */
   async createCollaborator(
     collaboratorDto: CreateCollaboratorDto,
   ): Promise<Collaborator> {
@@ -48,7 +53,11 @@ export class CollaboratorService {
     await this.collaboratorRepository.save(collaboratorToSave);
     return collaboratorToSave;
   }
-
+  /**
+   * Retrieves all collaborators with additional information about their squads.
+   *
+   * @returns Object containing both collaborators and total count
+   */
   async findAllCollaborators(): Promise<ICollaboratorCount> {
     const [collaborators, count] = await this.collaboratorRepository
       .createQueryBuilder('collaborator')
@@ -65,7 +74,12 @@ export class CollaboratorService {
       .getManyAndCount();
     return { count, collaborators };
   }
-
+  /**
+   * Retrieves a specific collaborator by ID with additional information about their squad.
+   *
+   * @param collaboratorId - ID of the collaborator to retrieve
+   * @returns The collaborator entity or null if not found
+   */
   async findOneCollaborator(
     collaboratorId: string,
   ): Promise<Collaborator | null> {
@@ -85,7 +99,13 @@ export class CollaboratorService {
       .getOne();
     return collaborator;
   }
-
+  /**
+   * Updates a specific collaborator by ID, ensuring email uniqueness and squad existence.
+   * All DTO params are optional.
+   * @param collaboratorId - ID of the collaborator to update
+   * @param collaboratorDto - Data transfer object for updating a collaborator
+   * @returns The updated collaborator entity
+   */
   async updateCollaborator(
     collaboratorId: string,
     collaboratorDto: UpdateCollaboratorDto,
@@ -119,7 +139,11 @@ export class CollaboratorService {
 
     return this.findOneCollaborator(collaboratorId);
   }
-
+  /**
+   * Removes a specific collaborator by ID.
+   *
+   * @param collaboratorId - ID of the collaborator to remove
+   */
   async removeCollaborator(collaboratorId: string): Promise<void> {
     await this.collaboratorRepository.delete(collaboratorId);
   }

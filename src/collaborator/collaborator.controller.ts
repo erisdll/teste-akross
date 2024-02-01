@@ -13,12 +13,19 @@ import { CollaboratorService } from './collaborator.service';
 import { CreateCollaboratorDto } from './dto/create-collaborator.dto';
 import { UpdateCollaboratorDto } from './dto/update-collaborator.dto';
 import { ApiParam, ApiTags } from '@nestjs/swagger';
-
+/**
+ * Controller handling CRUD operations for collaborators.
+ * Uses NestJS decorators for routing and Swagger for API documentation.
+ */
 @ApiTags('Collaborators')
 @Controller('collaborators')
 export class CollaboratorController {
   constructor(private readonly collaboratorService: CollaboratorService) {}
-
+  /**
+   * Endpoint to create a new collaborator
+   *
+   * @param createCollaboratorDto
+   */
   @Post()
   async create(@Body() createCollaboratorDto: CreateCollaboratorDto) {
     try {
@@ -36,7 +43,9 @@ export class CollaboratorController {
       );
     }
   }
-
+  /**
+   * Endpoint to retrieve all collaborators
+   */
   @Get()
   async findAll() {
     try {
@@ -47,7 +56,11 @@ export class CollaboratorController {
       throw new NotFoundException('Failed to find any collaborators!');
     }
   }
-
+  /**
+   * Endpoint to retrieve a specific collaborator by ID
+   *
+   * @param id
+   */
   @ApiParam({
     name: 'id',
     description:
@@ -63,7 +76,12 @@ export class CollaboratorController {
       throw new NotFoundException('Collaborator not found!');
     }
   }
-
+  /**
+   * Endpoint to update a specific collaborator by ID
+   *
+   * @param id
+   * @param updateCollaboratorDto
+   */
   @ApiParam({
     name: 'id',
     description:
@@ -90,7 +108,11 @@ export class CollaboratorController {
       );
     }
   }
-
+  /**
+   * Endpoint to delete a specific collaborator by ID
+   *
+   * @param id
+   */
   @ApiParam({
     name: 'id',
     description:
