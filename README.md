@@ -5,7 +5,7 @@
 </p>
 <p align="center">
   <a href="https://swagger.io/" target="blank"><img src="https://upload.wikimedia.org/wikipedia/commons/a/ab/Swagger-logo.png" width="100" alt="Swagger Logo" /></a>
-  <a href="https://www.postgresql.org/" target="blank"><img src="./assets/dockerlogo.png" height="100" alt="Docker Logo" /></a>
+  <a href="https://www.docker.com/" target="blank"><img src="./assets/dockerlogo.png" height="100" alt="Docker Logo" /></a>
 </p>
 
 
