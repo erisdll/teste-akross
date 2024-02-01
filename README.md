@@ -21,9 +21,9 @@
 
 ### Arquitetura
 
-  A aplicação segue o padrão de design repository, bem como as boas práticas de modularização sugeridas pelo NestJS. Cada módulo possui seus próprios serviços, controllers, DTOs, entidades e interfaces, promovendo a coesão e reduzindo acoplamentos.
+  A aplicação segue o padrão de design repository, bem como as boas práticas de modularização sugeridas pelo NestJS. Cada módulo possui seus próprios serviços, controllers, DTOs, entidades e interfaces, promovendo coesão e reduzindo acoplamentos.
   
-  A injeção de dependência foi amplamente utilizada para promover a modularidade necessária e facilitar a substituição de componentes.
+  A injeção de dependência foi amplamente utilizada para promover a modularidade necessária e facilitar a substituição dos componentes, melhorando a manutenabilidade do código.
 
 ### Gerenciamento de Colaboradores e Squads
 
@@ -33,7 +33,7 @@
 </p>
 
 ### Persistência de dados
-  Foi utilizada uma DB PostgreSQL para a realização da persistência dos dados. A DB está disponível tanto localmente via docker-compose, com um volume próprio, quanto na versão live da applicação, hosteada como um serviço diretamente no Render.
+  Foi utilizada uma DB PostgreSQL para a realização da persistência dos dados. A DB está disponível tanto localmente via docker-compose, com um volume próprio, quanto na versão live da applicação, hosteada como um cloud service no Render.
 
   Para o caso do desenvolvimento e processo de testes local, foi adicionado um container com o Adminer, permitindo também a gestão da DB por GUI.
 
